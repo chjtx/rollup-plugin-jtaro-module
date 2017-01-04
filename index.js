@@ -18,7 +18,7 @@ module.exports = function (options) {
 
     // 提取模板的<style>
     if (styleText) {
-      css = '\n[jtaro' + id + '] ' + styleText[1].trim()
+      css = '\n[jtaro' + id + '] ' + styleText[1].replace(/\bthis\b/, '').trim()
         .replace(/}\s+(?!$)/g, '}\n[jtaro' + id + '] ')
         .split(/,\s+/).join(',\n[jtaro' + id + '] ') + '\n'
 
