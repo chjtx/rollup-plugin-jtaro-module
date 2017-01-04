@@ -1,0 +1,26 @@
+{
+  "name": "rollup-plugin-jtaro-module",
+  "version": "0.0.1",
+  "description": "A Rollup plugin for JTaro Module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chjtx/rollup-plugin-jtaro-module.git"
+  },
+  "keywords": [
+    "jtaro-module",
+    "rollup-plugin"
+  ],
+  "author": "BarZu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chjtx/rollup-plugin-jtaro-module/issues"
+  },
+  "homepage": "https://github.com/chjtx/rollup-plugin-jtaro-module#readme",
+  "dependencies": {
+    "rollup-pluginutils": "^1.5.2"
+  }
+}
