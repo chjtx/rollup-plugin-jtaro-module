@@ -20,7 +20,11 @@ module.exports = function (options) {
     if (styleText) {
       css = '\n[jtaro' + id + '] ' + styleText[1].replace(/\bthis\b/, '').trim()
         .replace(/}\s+(?!$)/g, '}\n[jtaro' + id + '] ')
-        .split(/,\s+/).join(',\n[jtaro' + id + '] ') + '\n'
+        .replace(/\([^\n\r]+\)/g, function (match) {
+          return match.replace(/,/g, '<mark>')
+        })
+        .split(/,\s+/).join(',\n[jtaro' + id + '] ')
+        .replace(/<mark>/g, ',') + '\n'
 
       // 过滤已截取的style
       data = data.replace(styleText[0], '')
