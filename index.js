@@ -20,7 +20,7 @@ module.exports = function (options) {
     if (styleText) {
       css = '\n[jtaro' + id + '] ' + styleText[1].replace(/\bthis\b/, '').trim()
         .replace(/}\s+(?!$)/g, '}\n[jtaro' + id + '] ')
-        .replace(/\([^\n\r]+\)/g, function (match) {
+        .replace(/:[^;}]+(;|\})/g, function (match) {
           return match.replace(/,/g, '<mark>')
         })
         .split(/,\s+/).join(',\n[jtaro' + id + '] ')
