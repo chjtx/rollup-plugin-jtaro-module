@@ -50,6 +50,10 @@ export default {
 }
 ```
 
+## v0.0.5 (2017-02-24)
+
+- 将所有页面style合并到一起
+
 ## License
 
 MIT

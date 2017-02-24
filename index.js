@@ -48,15 +48,16 @@ module.exports = function (options) {
   return {
     name: 'jtaro-module',
     intro: function () {
-      return 'function _$styleInject (id, css) {\n' +
-        '  var s=document.getElementById(id)\n' +
-        '  if(!s){\n' +
-        '    s=document.createElement("style")\n' +
-        '    s.id=id\n' +
-        '    s.innerHTML=css\n' +
-        '    document.head.appendChild(s)\n' +
-        '  }\n' +
-        '}'
+      return 'var __jtaro_style__ = [];'
+    },
+    outro: function () {
+      return '(function(c){\n' +
+        '  var s=document.createElement("style");\n' +
+        '  s.id="jtaro_style_bundle";\n' +
+        '  s.innerHTML=c;\n' +
+        '  document.head.appendChild(s)\n' +
+        '})(__jtaro_style__.join("\\n\\n"))\n' +
+        '__jtaro_style__ = null'
     },
     transform: function (code, id) {
       if (!filter(id)) return
@@ -69,13 +70,13 @@ module.exports = function (options) {
       if (ext === '.html') {
         result = parseHtml(code, id)
         if (result.style) {
-          style = '_$styleInject("jtaro_style' + result.id + '", ' + JSON.stringify(result.style) + ')\n'
+          style = '__jtaro_style__.push(' + JSON.stringify(result.style) + ')\n'
         }
         code = style + 'export default ' + JSON.stringify(result.html)
 
       // css
       } else if (ext === '.css') {
-        code = '_$styleInject("jtaro_css' + path2id(id) + '", ' + JSON.stringify('\n' + code.trim() + '\n') + ')'
+        code = '__jtaro_style__.push(' + JSON.stringify('\n' + code.trim() + '\n') + ')'
 
       // other
       } else {
