@@ -33,7 +33,7 @@ import template from './template.html'
 
 ## Options
 
-- `root` Your site root directory
+- `root` Your site root directory, relative to your project directory.
 
 ```js
 // rollup.config.js
