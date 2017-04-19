@@ -24,7 +24,8 @@ module.exports = function (options) {
           return match.replace(/,/g, '<mark>')
         })
         .split(/,\s+/).join(',\n[jtaro' + id + '] ')
-        .replace(/<mark>/g, ',') + '\n'
+        .replace(/<mark>/g, ',')
+        .replace(/\s+this/g, '') + '\n'
 
       // 过滤已截取的style
       data = data.replace(styleText[0], '')
