@@ -50,6 +50,10 @@ export default {
 }
 ```
 
+## v0.0.7 (2017-04-28)
+
+- 修复`@keyframes`和`@media`被误处理的问题
+
 ## v0.0.6 (2017-04-19)
 
 - 支持`this.myclass {}`选择器语法
