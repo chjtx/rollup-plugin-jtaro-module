@@ -62,15 +62,18 @@ module.exports = function (options) {
   return {
     name: 'jtaro-module',
     intro: function () {
-      return 'var __jtaro_style__ = [];'
-    },
-    outro: function () {
-      return '(function(c){\n' +
-        '  var s=document.createElement("style");\n' +
-        '  s.id="jtaro_style_bundle";\n' +
-        '  s.innerHTML=c;\n' +
-        '  document.head.appendChild(s)\n' +
-        '})(__jtaro_style__.join("\\n\\n"))\n' +
+      return 'var __jtaro_style__ = "###jtaro_module_style_text###";\n' +
+        '(function(c){\n' +
+        '  var s = document.getElementById("jtaro_style_bundle")\n' +
+        '  if (s) {\n' +
+        '   s.innerHTML += c\n' +
+        '  } else {\n' +
+        '    s = document.createElement("style");\n' +
+        '    s.id = "jtaro_style_bundle";\n' +
+        '    s.innerHTML = c;\n' +
+        '    document.head.appendChild(s)\n' +
+        '  }\n' +
+        '})(__jtaro_style__)\n' +
         '__jtaro_style__ = null'
     },
     transform: function (code, id) {
@@ -84,13 +87,13 @@ module.exports = function (options) {
       if (ext === '.html') {
         result = parseHtml(code, id)
         if (result.style) {
-          style = '__jtaro_style__.push(' + JSON.stringify(result.style) + ')\n'
+          style = '_____(' + JSON.stringify('<<<<<' + result.style + '>>>>>') + ');'
         }
-        code = style + 'export default ' + JSON.stringify(result.html)
+        code = style + '\nexport default ' + JSON.stringify(result.html)
 
       // css
       } else if (ext === '.css') {
-        code = '__jtaro_style__.push(' + JSON.stringify('\n' + code.trim() + '\n') + ')'
+        code = '_____(' + JSON.stringify('<<<<<\n' + code.trim() + '\n>>>>>') + ');'
 
       // other
       } else {
@@ -101,6 +104,17 @@ module.exports = function (options) {
         code: code,
         map: { mappings: '' }
       }
+    },
+    transformBundle: function (source) {
+      var style = []
+      var code = ''
+      // bundle后将预先标记的style代码前置到开头执行，确保样式优先
+      code = source.replace(/_____\(\"<<<<<([\s\S]+?)>>>>>\"\);?[\n\r]+?/g, function (match, css) {
+        style.push(css)
+        return ''
+      })
+      code = code.replace('###jtaro_module_style_text###', style.join(''))
+      return code
     }
   }
 }
