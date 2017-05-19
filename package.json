@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-jtaro-module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Rollup plugin for JTaro Module.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/chjtx/rollup-plugin-jtaro-module#readme",
   "dependencies": {
-    "rollup-pluginutils": "^1.5.2"
+    "rollup-pluginutils": "^1.5.2",
+    "source-map": "^0.5.6"
   }
 }
