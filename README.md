@@ -52,6 +52,10 @@ export default {
 
 ## LOG
 
+### v0.2.1 (2017-05-20)
+
+- 修复sourceMap不能断点的问题
+
 ### v0.2.0 (2017-05-19)
 
 - 添加sourceMap支持
