@@ -1,10 +1,13 @@
 var utils = require('rollup-pluginutils')
 var path = require('path')
 var sourceMap = require('source-map')
+const fs = require('fs')
+const compiler = require('vue-template-compiler')
+const { compileTemplate } = require('@vue/component-compiler-utils')
 
 module.exports = function (options) {
   options = options || {}
-  var filter = utils.createFilter(options.include || ['**/*.html', '**/*.css'], options.exclude)
+  var filter = utils.createFilter(options.include || ['**/*.html', '**/*.css', '**/*.js'], options.exclude)
 
   function path2id (p) {
     var root = path.resolve(process.cwd(), options.root || '')
@@ -47,7 +50,7 @@ module.exports = function (options) {
           // 去掉this
           .replace(/\s+this(?=\s+)?/g, '') + '\n'
       }
-  
+
       // 过滤已截取的style
       data = data.replace(styleText[0], '')
         // 去掉注释
@@ -99,11 +102,29 @@ module.exports = function (options) {
         if (result.style) {
           style = '_____(' + JSON.stringify('<<<<<' + result.style + '>>>>>') + ');'
         }
-        code = style + '\nexport default ' + JSON.stringify(result.html)
+        if (!options.html2Render) {
+          code = style + '\nexport default ' + JSON.stringify(result.html)
+        } else {
+          // html转成render函数
+          const compiled = compileTemplate({
+            source: result.html,
+            filename: '',
+            compiler,
+            transformAssetUrls: '',
+            isFunctional: false,
+            isProduction: true,
+            optimizeSSR: false
+          })
+          code = style + '\n' + compiled.code + '\nexport default {render, staticRenderFns};'
+        }
 
       // css
       } else if (ext === '.css') {
         code = '_____(' + JSON.stringify('<<<<<\n' + code.trim() + '\n>>>>>') + ');'
+
+      // js
+      } else if (ext === '.js' && options.html2Render && fs.existsSync(id.replace(/\.js$/, '.html'))) {
+        code = code.replace(/template *: *html/, 'render: html.render,\nstaticRenderFns: html.staticRenderFns')
 
       // other
       } else {
@@ -119,11 +140,11 @@ module.exports = function (options) {
       var generator = new sourceMap.SourceMapGenerator({
         file: 'j'
       })
-      generator.setSourceContent("j", source)
+      generator.setSourceContent('j', source)
 
       var style = []
       // bundle后将预先标记的style代码前置到开头执行，确保样式优先
-      var code = source.replace(/_____\(\"<<<<<([\s\S]+?)>>>>>\"\);?[\n\r]+?/g, function (match, css) {
+      var code = source.replace(/_____\("<<<<<([\s\S]+?)>>>>>"\);?[\n\r]+?/g, function (match, css) {
         style.push(css)
         return ''
       })

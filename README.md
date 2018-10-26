@@ -44,13 +44,18 @@ export default {
   dest: 'bundle.js',
   plugins: [
     jtaroModule({
-      root: 'website'
+      root: 'website',
+      html2Render: true
     })
   ]
 }
 ```
 
 ## LOG
+
+### v0.3.0 (2018-10-26)
+
+- 添加`html2Render`选项，可把html文件转换为vue的render函数，同时把同名的js文件的`template: html`转成`render: html.render,\nstaticRenderFns: html.staticRenderFns`
 
 ### v0.2.3 (2018-06-07)
 
