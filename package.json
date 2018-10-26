@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-jtaro-module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Rollup plugin for JTaro Module.",
   "main": "index.js",
   "scripts": {

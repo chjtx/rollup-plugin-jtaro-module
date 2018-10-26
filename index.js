@@ -102,9 +102,7 @@ module.exports = function (options) {
         if (result.style) {
           style = '_____(' + JSON.stringify('<<<<<' + result.style + '>>>>>') + ');'
         }
-        if (!options.html2Render) {
-          code = style + '\nexport default ' + JSON.stringify(result.html)
-        } else {
+        if (options.html2Render && fs.existsSync(id.replace(/\.html$/, '.js'))) {
           // html转成render函数
           const compiled = compileTemplate({
             source: result.html,
@@ -116,6 +114,8 @@ module.exports = function (options) {
             optimizeSSR: false
           })
           code = style + '\n' + compiled.code + '\nexport default {render, staticRenderFns};'
+        } else {
+          code = style + '\nexport default ' + JSON.stringify(result.html)
         }
 
       // css

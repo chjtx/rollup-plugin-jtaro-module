@@ -53,6 +53,10 @@ export default {
 
 ## LOG
 
+### v0.3.1 (2018-10-26)
+
+- 修复`html2Render`选项，只有有与html同名的js文件才转成vue的render函数
+
 ### v0.3.0 (2018-10-26)
 
 - 添加`html2Render`选项，可把html文件转换为vue的render函数，同时把同名的js文件的`template: html`转成`render: html.render,\nstaticRenderFns: html.staticRenderFns`
