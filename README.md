@@ -53,6 +53,10 @@ export default {
 
 ## LOG
 
+### v0.3.2 (2018-10-29)
+
+- 修复引入*.css文件时打包出现无限循环的bug
+
 ### v0.3.1 (2018-10-26)
 
 - 修复`html2Render`选项，只有有与html同名的js文件才转成vue的render函数

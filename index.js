@@ -144,7 +144,7 @@ module.exports = function (options) {
 
       var style = []
       // bundle后将预先标记的style代码前置到开头执行，确保样式优先
-      var code = source.replace(/_____\("<<<<<([\s\S]+?)>>>>>"\);?[\n\r]+?/g, function (match, css) {
+      var code = source.replace(/ +_____\("<<<<<([\s\S]+?)>>>>>"\);?[\n\r]+?/g, function (match, css) {
         style.push(css)
         return ''
       })
